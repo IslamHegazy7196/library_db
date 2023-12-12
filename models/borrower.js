@@ -1,7 +1,7 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../sequelize');
+const { DataTypes } = require("sequelize");
+const sequelize = require("../sequelize");
 
-const Borrower = sequelize.define('Borrower', {
+const Borrower = sequelize.define("Borrower", {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -15,5 +15,7 @@ const Borrower = sequelize.define('Borrower', {
     allowNull: false,
   },
 });
+
+
 
 module.exports = Borrower;
