@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../sequelize');
+const BorrowingProcess = require('./borrowingProcess');
 
 const Book = sequelize.define('Book', {
   title: {
@@ -22,6 +23,9 @@ const Book = sequelize.define('Book', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+}, {
+  underscored: true, 
 });
 
-module.exports = Book;
+module.exports = Book
+

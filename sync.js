@@ -3,8 +3,8 @@ const Book = require("./models/book");
 const Borrower = require("./models/borrower");
 const BorrowingProcess = require("./models/borrowingProcess");
 
-Book.hasMany(BorrowingProcess);
-BorrowingProcess.belongsTo(Book);
+// Import the associations after defining the models
+require('./models/associations');
 
 sequelize
   .sync({ force: true }) // { force: true } will drop and recreate tables

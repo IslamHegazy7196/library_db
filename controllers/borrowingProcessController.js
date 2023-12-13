@@ -14,12 +14,11 @@ const checkOutBook = async (req, res) => {
     });
     res.json(borrowingProcess);
   } catch (error) {
-    console.log(error)
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error || "Internal Server Error" });
   }
 };
 
-// Return a book
+
 const returnBook = async (req, res) => {
   try {
     const { book_id, borrower_id, return_date } = req.body;
@@ -27,37 +26,40 @@ const returnBook = async (req, res) => {
       { return_date },
       { where: { book_id, borrower_id } }
     );
-    if (updatedRows > 0) {
-      const updatedBorrowingProcess = await BorrowingProcess.findOne({
-        where: { book_id, borrower_id },
-      });
-      res.json(updatedBorrowingProcess);
-    } else {
-      res.status(404).json({ error: "Borrowing process not found" });
+
+    if (!updatedRows) {
+      return res.status(404).json({ error: "Borrowing process not found" });
     }
+
+    const updatedBorrowingProcess = await BorrowingProcess.findOne({
+      where: { book_id, borrower_id },
+    });
+
+    res.json(updatedBorrowingProcess);
+    
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error || "Internal Server Error" });
   }
 };
 
-// List books for a borrower
 const listBooksForBorrower = async (req, res) => {
   try {
     const { borrower_id } = req.params;
     if (!borrower_id || isNaN(parseInt(borrower_id))) {
-      return res.status(400).json({ error: "Invalid borrower_id" });
+      return res.status(400).json({ error: error || "Invalid borrower_id" });
     }
-    console.log(borrower_id);
     const borrowingProcesses = await BorrowingProcess.findAll({
       where: { borrower_id },
-      include: [{ model: Book }],
     });
+    console.log("11111111111111");
     res.json(borrowingProcesses);
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    console.log(error)
+    res.status(500).json({ error: error || "Internal Server Error" });
   }
 };
+
 module.exports = {
   checkOutBook,
   returnBook,

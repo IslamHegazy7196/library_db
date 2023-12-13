@@ -47,7 +47,9 @@ const deleteBorrower = async (req, res) => {
   }
 };
 
-// List all borrowers
+// TODO: Add search, pagination and filtering or sorting
+// page and limit - return available books
+// sort by borrow price - return date | asc = desc
 const listBorrowers = async (req, res) => {
   try {
     const borrowers = await Borrower.findAll();
