@@ -5,9 +5,9 @@ const addBorrower = async (req, res) => {
   try {
     const { name, email, registered_date } = req.body;
     const borrower = await Borrower.create({ name, email, registered_date });
-    res.json(borrower);
+    res.status(201).json(borrower);
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error ||"Internal Server Error" });
   }
 };
 
@@ -27,7 +27,7 @@ const updateBorrower = async (req, res) => {
       res.status(404).json({ error: "Borrower not found" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error ||"Internal Server Error" });
   }
 };
 
@@ -43,7 +43,7 @@ const deleteBorrower = async (req, res) => {
     await Borrower.destroy({ where: { id } });
     res.json(deletedBorrower);
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error ||"Internal Server Error" });
   }
 };
 
@@ -55,7 +55,7 @@ const listBorrowers = async (req, res) => {
     const borrowers = await Borrower.findAll();
     res.json(borrowers);
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error ||"Internal Server Error" });
   }
 };
 

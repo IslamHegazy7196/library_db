@@ -1,8 +1,6 @@
 const { Op } = require("sequelize");
 const Book = require("../models/book");
-const { bookSchema, searchSchema } = require('../validationSchemas');
-
-
+const { bookSchema, searchSchema } = require("../validationSchemas");
 
 // Create a book
 const addBook = async (req, res) => {
@@ -10,7 +8,13 @@ const addBook = async (req, res) => {
     const { title, author, isbn, quantity, shelf_location } = req.body;
 
     // Validate input using Joi
-    const { error } = bookSchema.validate({ title, author, isbn, quantity, shelf_location });
+    const { error } = bookSchema.validate({
+      title,
+      author,
+      isbn,
+      quantity,
+      shelf_location,
+    });
     if (error) {
       return res.status(400).json({ error: error.details[0].message });
     }
@@ -21,9 +25,9 @@ const addBook = async (req, res) => {
       quantity,
       shelf_location,
     });
-    res.json(book);
+    res.status(201).json(book);
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error || "Internal Server Error" });
   }
 };
 
@@ -43,7 +47,7 @@ const updateBook = async (req, res) => {
       res.status(404).json({ error: "Book not found" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error || "Internal Server Error" });
   }
 };
 
@@ -59,7 +63,7 @@ const deleteBook = async (req, res) => {
     await Book.destroy({ where: { id } });
     res.json(deletedBook);
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error || "Internal Server Error" });
   }
 };
 
@@ -69,7 +73,7 @@ const listBooks = async (req, res) => {
     const books = await Book.findAll();
     res.json(books);
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error || "Internal Server Error" });
   }
 };
 
@@ -93,7 +97,7 @@ const searchBooks = async (req, res) => {
     });
     res.json(books);
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error || "Internal Server Error" });
   }
 };
 
