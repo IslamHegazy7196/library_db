@@ -1,10 +1,19 @@
 const { Op } = require("sequelize");
 const Book = require("../models/book");
+const { bookSchema, searchSchema } = require('../validationSchemas');
+
+
 
 // Create a book
 const addBook = async (req, res) => {
   try {
     const { title, author, isbn, quantity, shelf_location } = req.body;
+
+    // Validate input using Joi
+    const { error } = bookSchema.validate({ title, author, isbn, quantity, shelf_location });
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+    }
     const book = await Book.create({
       title,
       author,
@@ -68,6 +77,11 @@ const listBooks = async (req, res) => {
 const searchBooks = async (req, res) => {
   try {
     const { title, author, isbn } = req.query;
+    // Validate search input using Joi
+    const { error } = searchSchema.validate({ title, author, isbn });
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+    }
     const books = await Book.findAll({
       where: {
         [Op.or]: [
