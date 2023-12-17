@@ -26,6 +26,7 @@ describe('Book Controller Tests', () => {
       
       req.body = mockBook;
       await bookController.addBook(req, res);
+      console.log(JSON.stringify(res, null, 2))
       expect(res.status).toHaveBeenCalledWith(201);
       expect(res.json).toHaveBeenCalledWith(mockBook);
     });

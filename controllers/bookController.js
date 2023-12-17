@@ -8,13 +8,15 @@ const addBook = async (req, res) => {
     const { title, author, isbn, quantity, shelf_location } = req.body;
 
     // Validate input using Joi
-    const { error } = bookSchema.validate({
+    const validation = bookSchema.validate({
       title,
       author,
       isbn,
       quantity,
       shelf_location,
     });
+    const error = validation?.error;
+
     if (error) {
       return res.status(400).json({ error: error.details[0].message });
     }
